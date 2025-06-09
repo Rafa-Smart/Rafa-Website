@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .pokemon-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pokemon-card {
+            background-color: white;
+            border-radius: 10px;
+            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .pokemon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .pokemon-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+
+        .pokemon-info {
+            padding: 15px;
+        }
+
+        .pokemon-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+            text-transform: capitalize;
+        }
+
+        .pokemon-type {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 10px;
+            color: white;
+            text-transform: capitalize;
+        }
+
+        .pokemon-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .pokemon-stat {
+            text-align: center;
+        }
+
+        .pokemon-stat span {
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 50px 0;
+            color: #666;
+        }
+
+        /* Type colors */
+        .type-normal { background-color: #A8A878; }
+        .type-fire { background-color: #F08030; }
+        .type-water { background-color: #6890F0; }
+        .type-electric { background-color: #F8D030; }
+        .type-grass { background-color: #78C850; }
+        .type-ice { background-color: #98D8D8; }
+        .type-fighting { background-color: #C03028; }
+        .type-poison { background-color: #A040A0; }
+        .type-ground { background-color: #E0C068; }
+        .type-flying { background-color: #A890F0; }
+        .type-psychic { background-color: #F85888; }
+        .type-bug { background-color: #A8B820; }
+        .type-rock { background-color: #B8A038; }
+        .type-ghost { background-color: #705898; }
+        .type-dragon { background-color: #7038F8; }
+        .type-dark { background-color: #705848; }
+        .type-steel { background-color: #B8B8D0; }
+        .type-fairy { background-color: #EE99AC; }
+    </style>
+</head>
+<body>
+
+    <div class="pokemon-container" id="pokemonContainer">
+        <div class="loading">Loading Pokemon data...</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pokemonContainer = document.getElementById('pokemonContainer');
+            
+            fetch('https://pokemon-api-neon-six.vercel.app/pokemon.json')
+                .then(response => response.json())
+                .then(data => {
+                    pokemonContainer.innerHTML = '';
+                    
+                    data.forEach(pokemon => {
+                        const pokemonCard = document.createElement('div');
+                        pokemonCard.className = 'pokemon-card';
+                        
+                        pokemonCard.innerHTML = `
+                            <img src="${pokemon.img}" alt="${pokemon.name}" class="pokemon-image">
+                            <div class="pokemon-info">
+                                <h3 class="pokemon-name">${pokemon.name}</h3>
+                                ${pokemon.type}
+                                
+                            </div>
+                        `;
+                        
+                        pokemonContainer.appendChild(pokemonCard);
+                    });
+                })
+                .catch(error => {
+                    pokemonContainer.innerHTML = `<div class="loading">Error loading Pokemon data: ${error.message}</div>`;
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
